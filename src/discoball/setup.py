@@ -174,6 +174,7 @@ TABLES: list[Table] = [
 
 
 def main():
+    DB.parent.mkdir(exist_ok=True)
     conn = duckdb.connect(DB, config={"storage_compatibility_version": "v1.5.0"})
 
     for table in TABLES:

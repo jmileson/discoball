@@ -46,9 +46,16 @@ code .
 
 If `code` is not recognized, open VS Code and use **File → Open Folder** to open the `discoball` folder instead. Open the project folder itself, not its parent or just an individual Python file.
 
-Git LFS normally downloads the CSV contents automatically during clone. `git lfs pull` also downloads any missing data (including for an existing clone). If the files contain short text starting with `version https://git-lfs.github.com/spec/v1` instead of CSV rows, install Git LFS and run `git lfs install` followed by `git lfs pull`.
+Check that the data downloaded: in VS Code, open `olist/orders.csv`. You should see a comma-separated header followed by many rows of order records.
 
-The `.gitattributes` file routes `olist/*.csv` through LFS. Add and commit CSV changes normally; `git push` uploads their contents to LFS storage. The repository host's LFS storage and bandwidth limits apply.
+If the first line is `version https://git-lfs.github.com/spec/v1`, you have a Git LFS placeholder rather than the data. Make sure Git LFS is installed, then run these commands from the project folder:
+
+```powershell
+git lfs install
+git lfs pull
+```
+
+Reopen `olist/orders.csv` and check again. If the file is still a placeholder or is missing, keep the error message and ask the project maintainer for help before continuing.
 
 ### 3. Create the local environment
 
@@ -117,9 +124,44 @@ products: 32951 rows
 sellers: 3095 rows
 ```
 
-If the CSV files are missing or contain Git LFS pointers instead of data, run `git lfs pull` and try again. The script creates tables only if they do not already exist; running it again reports the existing tables' row counts without reloading them.
+If setup reports missing CSV files or cannot read the data, return to the `olist/orders.csv` check in [step 2](#2-clone-and-open-the-project), then retry `uv run setup`. If it names a different CSV, check that file for the same placeholder text. If the problem continues, share the error with the project maintainer.
 
-**Setup is complete.** Continue with [Lesson 1: Meet your data](src/discoball/lesson_1/README.md) to connect DBeaver to your local database and start exploring with SQL. The sections below are reference material; you don't need to work through them now.
+The script creates tables only if they do not already exist. Running it again reports the existing row counts; it does not refresh or replace those tables.
+
+**Setup is complete.** Start with Lesson 1 below. You do not need to finish reading the reference sections before beginning.
+
+## Work through the lessons
+
+Each lesson is a Markdown file named `README.md` in its own folder under `src/discoball/`. Open the links below, or find the file in VS Code and use **Open Preview** (`Ctrl+Shift+V`) to read it.
+
+| Start here | What you will practice |
+| --- | --- |
+| [Lesson 1: Meet your data](src/discoball/lesson_1/README.md) | Connect DBeaver, explore the tables, and distinguish findings from assumptions. |
+| [Lesson 2: What counts as bought together?](src/discoball/lesson_2/README.md) | Define a basket, join tables safely, and count category pairs without double-counting. |
+| [Lesson 3: Common together, or unusually associated?](src/discoball/lesson_3/README.md) | Interpret support, confidence, and lift alongside the counts behind them. |
+| [Lesson 4: Same customer, different question](src/discoball/lesson_4/README.md) | Compare basket affinity with customer-history affinity and recognize what each can answer. |
+| [Lesson 4 side quest: From your query to a shared workflow](src/discoball/lesson_4/platform_side_quest.md) | Plan a dependable shared analysis and collaborate with data engineering. |
+
+Read the lessons in order: later lessons build on the definitions and SQL from earlier ones. For each lesson:
+
+1. Read the explanation, then run each SQL block in DBeaver against your local `.data/dev.duckdb` connection. Run PowerShell commands in the VS Code terminal, not the SQL editor.
+2. Pause at **Your turn** and other questions. Save your queries as a SQL script and keep a short note of your results, assumptions, and unanswered questions.
+3. Check what each result represents before moving on. A query running successfully is not the same as answering the intended question.
+
+Lessons 2–4 use temporary views that exist only in the connection that created them. Keep using the same SQL editor session. If you disconnect, follow the lesson's instructions to recreate its dependencies before continuing.
+
+These lessons use local DuckDB; you do not need a MotherDuck account. The side quest prepares you to discuss shared-platform work without requiring access to one yet.
+
+## Reference guide
+
+Return to these sections when you need them rather than reading them as additional lessons:
+
+- [Everyday workflow](#everyday-workflow): commands for running Python and managing dependencies.
+- [Formatting, linting, and type checking](#formatting-linting-and-type-checking): checks to use when you start changing Python code.
+- [What's in the repository?](#whats-in-the-repository): where to find code, data, lessons, and configuration.
+- [Extension hygiene](#extension-hygiene): guidance on installing and trusting editor extensions.
+- [Troubleshooting](#troubleshooting): common setup problems.
+- [macOS / Linux](#macos--linux): differences from the Windows setup.
 
 ## Everyday workflow
 
@@ -174,7 +216,9 @@ Keep the project's `.venv` selected as your Python interpreter. This workspace s
 
 | Path              | Purpose                                                                                                   |
 | ----------------- | --------------------------------------------------------------------------------------------------------- |
-| `src/discoball/`  | The project's Python code. `__init__.py` currently contains the `discoball` entry point.                  |
+| `src/discoball/`  | Python code and lesson folders. Start with the lesson links above; `__init__.py` contains the `discoball` entry point. |
+| `olist/` | Source CSV data used by setup. |
+| `.data/dev.duckdb` | Your local database, created by `uv run setup` and opened in DBeaver. |
 | `pyproject.toml`  | Project metadata, supported Python versions, dependencies, and development tools.                         |
 | `.python-version` | The Python version uv should use for this project.                                                        |
 | `uv.lock`         | Exact dependency resolutions, committed so setups are reproducible.                                       |
