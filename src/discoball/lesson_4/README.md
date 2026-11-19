@@ -137,8 +137,17 @@ customer may ever have placed.
 provide much evidence about buying across visits, or is most of the observed activity a
 single order?
 
-If repeat purchasing is sparse, that limits what you can learn. It is not a reason to
-pretend that same-basket purchases are later purchases.
+**Checkpoint:** with the supplied data and these eligibility rules, you should have
+92,098 eligible customers, of whom 2,742 have more than one eligible order—about 3%.
+Sum `customer_count` across all rows for the population, then across rows where
+`order_count > 1` for the repeat-order count. If your counts differ, check the
+eligibility rules and customer mapping before interpreting the difference.
+
+Most customers have only one eligible order in this snapshot. Customer-history
+affinity may therefore add relatively little evidence beyond basket affinity.
+That is a finding about the available observations, not proof that these people
+never bought again. Sparse repeat purchasing limits what you can learn; it is not
+a reason to pretend that same-basket purchases are later purchases.
 
 ## 4. Change the grain to customer and category
 
@@ -312,6 +321,17 @@ To require evidence across different orders, return to the view that still conta
 order identifiers:
 
 ```sql
+WITH cross_order_customers AS (
+    SELECT DISTINCT
+        a.customer_unique_id
+      , a.category_name AS category_a
+      , b.category_name AS category_b
+    FROM customer_order_categories AS a
+    INNER JOIN customer_order_categories AS b
+        ON a.customer_unique_id = b.customer_unique_id
+       AND a.order_id <> b.order_id
+       AND a.category_name < b.category_name
+)
 SELECT
     category_a
   , category_b

@@ -173,14 +173,14 @@ LIMIT 20
 
 **Your turn:** choose one row and calculate:
 
-    - Of the baskets containing category A, what percentage also contain B?
-    - Of the baskets containing category B, what percentage also contain A?
+- Of the baskets containing category A, what percentage also contain B?
+- Of the baskets containing category B, what percentage also contain A?
 
 Use `pair_baskets`, `a_baskets`, and `b_baskets`, then compare your answers with the
 displayed confidence percentages. Small differences may come from rounding.
 
 Identify the denominator in each calculation. Why can the percentages differ even
-though they use the same shared-basket count? Do either of these calculations tell 
+though they use the same shared-basket count? Do either of these calculations tell
 you which category was purchased first?
 
 ## 5. Look for fragile results
@@ -206,8 +206,18 @@ LIMIT 20
 ;
 ```
 
-How many shared baskets support the highest values? Would you present the same
-recommendation if the pair occurred twice rather than two hundred times?
+Read `pair_baskets` alongside `lift`. A very high lift based on two shared baskets
+is a small amount of evidence, even if the co-occurrence is unusual relative to the
+categories' overall frequencies. Lift alone does not establish that the relationship
+is stable or commercially useful.
+
+In Lesson 2, only 723 eligible baskets contained multiple categories. Keep that
+limited evidence in mind when comparing pairs. More shared baskets give you more
+observations to investigate, but counts alone do not establish reliability or value.
+
+**Your turn:** compare two high-lift pairs with different shared-basket counts.
+Which would you investigate first, and why? What would you still need to know
+before recommending either pair?
 
 Now apply an illustrative evidence filter:
 
@@ -249,8 +259,9 @@ categories that avoid one another.
 
 ## 6. Choose what to investigate next
 
-Pick two candidates: one common pair and one higher-lift pair that passes your chosen
-count filter. For each, record:
+If the evidence permits, pick two candidates: one common pair and one higher-lift
+pair that passes your chosen count filter. If too few qualify, report that limitation
+rather than weakening the rule just to complete the exercise. For each candidate, record:
 
 - Pair count and total eligible baskets.
 - Support, both directional confidence values, and lift.

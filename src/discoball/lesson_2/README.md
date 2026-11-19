@@ -211,6 +211,16 @@ An order with one category cannot produce a category pair, even if it contains m
 items. Look at how many baskets have two or more categories before assuming this dataset
 can support strong affinity conclusions.
 
+**Checkpoint:** with the supplied data and these eligibility rules, expect 95,146
+eligible baskets: 94,423 with one category, 708 with two, and 15 with three. Only
+723 baskets—about 0.76%—can contribute category pairs. If your counts differ,
+check the delivered-order filter and category deduplication before continuing.
+
+A large order table does not automatically give you a large amount of evidence
+about categories bought together. Sparse pair counts are an expected feature of
+this exercise, not a sign that you failed to find the right query. You may conclude
+that a pairing needs more evidence rather than recommending it.
+
 **Your turn:** explain why counting items would give a different answer from counting
 categories.
 
