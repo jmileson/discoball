@@ -71,7 +71,8 @@ order_payments
 order_reviews
 orders
 product_categories
-products sellers
+products
+sellers
 ```
 
 **If something goes wrong:**
