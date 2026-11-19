@@ -11,3 +11,9 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Mac - Annoying
+.DS_Store
+
+# Data
+.data/

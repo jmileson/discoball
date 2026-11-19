@@ -1,6 +1,8 @@
 # Discoball
 
-A teaching project for analysts learning DuckDB, Python, and how to approach problems from a data engineering perspective.
+A teaching project for analysts working with a supported data platform.
+
+The goal is not to turn analysts into data engineers. It is to help them approach analytical problems effectively, recognize and communicate data issues, and collaborate with a data engineering platform team. Python and DuckDB provide a practical environment for developing those habits and extending analytical work within the platform's guardrails.
 
 The project uses [uv](https://docs.astral.sh/uv/) to manage Python, dependencies, and a **project-local virtual environment** (`.venv`). This keeps this project's packages separate from other projects and your system Python.
 
@@ -11,6 +13,7 @@ These instructions use **PowerShell**, including the terminal built into VS Code
 ### 1. Install the tools
 
 - Install [Git for Windows](https://git-scm.com/downloads/win).
+- Install [Git LFS](https://git-lfs.com/) if it is not already included with your Git installation. The CSV data in `olist/` is stored using Git LFS.
 - Install [Visual Studio Code](https://code.visualstudio.com/).
 - Install uv by running the official installer in PowerShell:
 
@@ -24,6 +27,8 @@ Close and reopen PowerShell (and VS Code if it was open) so the updated `PATH` t
 
 ```powershell
 git --version
+git lfs version
+git lfs install
 uv --version
 ```
 
@@ -34,10 +39,15 @@ Copy the repository's clone URL from its hosting page, then run the following, r
 ```powershell
 git clone <repository-url> discoball
 cd discoball
+git lfs pull
 code .
 ```
 
 If `code` is not recognized, open VS Code and use **File → Open Folder** to open the `discoball` folder instead. Open the project folder itself, not its parent or just an individual Python file.
+
+Git LFS normally downloads the CSV contents automatically during clone. `git lfs pull` also downloads any missing data (including for an existing clone). If the files contain short text starting with `version https://git-lfs.github.com/spec/v1` instead of CSV rows, install Git LFS and run `git lfs install` followed by `git lfs pull`.
+
+The `.gitattributes` file routes `olist/*.csv` through LFS. Add and commit CSV changes normally; `git push` uploads their contents to LFS storage. The repository host's LFS storage and bandwidth limits apply.
 
 ### 3. Create the local environment
 
@@ -83,6 +93,30 @@ uv run discoball
 ```
 
 The first command should print a path inside this project's `.venv`. The second should print `[(42,)]`, and the last should print `Hello from discoball!`.
+
+### 6. Load the Olist data
+
+Run the setup script from the project terminal to load the CSV files in `olist/` into the local DuckDB database at `.data/dev.duckdb`:
+
+```powershell
+uv run setup
+```
+
+You should see the following row counts:
+
+```text
+customers: 99442 rows
+orders: 99441 rows
+order_items: 112650 rows
+geolocation: 1000163 rows
+order_payments: 103886 rows
+order_reviews: 99224 rows
+product_categories: 71 rows
+products: 32951 rows
+sellers: 3095 rows
+```
+
+If the CSV files are missing or contain Git LFS pointers instead of data, run `git lfs pull` and try again. The script creates tables only if they do not already exist; running it again reports the existing tables' row counts without reloading them.
 
 **Setup is complete.** The sections below are reference material; you don't need to work through them now.
 
