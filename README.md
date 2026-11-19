@@ -15,6 +15,7 @@ These instructions use **PowerShell**, including the terminal built into VS Code
 - Install [Git for Windows](https://git-scm.com/downloads/win).
 - Install [Git LFS](https://git-lfs.com/) if it is not already included with your Git installation. The CSV data in `olist/` is stored using Git LFS.
 - Install [Visual Studio Code](https://code.visualstudio.com/).
+- Install [DBeaver Community](https://dbeaver.io/download/), a desktop application for exploring databases and running SQL. Choose the installer for your operating system and follow your organization's approved installation process. You do not need the paid edition or a separate DuckDB server. The first DuckDB connection may need an internet connection to download its driver.
 - Install uv by running the official installer in PowerShell:
 
   ```powershell
@@ -118,7 +119,7 @@ sellers: 3095 rows
 
 If the CSV files are missing or contain Git LFS pointers instead of data, run `git lfs pull` and try again. The script creates tables only if they do not already exist; running it again reports the existing tables' row counts without reloading them.
 
-**Setup is complete.** The sections below are reference material; you don't need to work through them now.
+**Setup is complete.** Continue with [Lesson 1: Meet your data](src/discoball/lesson_1/README.md) to connect DBeaver to your local database and start exploring with SQL. The sections below are reference material; you don't need to work through them now.
 
 ## Everyday workflow
 
@@ -204,6 +205,6 @@ If an extension behaves unexpectedly—for example, asking you to paste a token 
 
 ## macOS / Linux
 
-Install Git, VS Code (if desired), and uv using the [official installation instructions](https://docs.astral.sh/uv/getting-started/installation/). Then clone the repository and run the same `uv sync` and `uv run ...` commands above.
+Install Git, [DBeaver Community](https://dbeaver.io/download/), VS Code (if desired), and uv using the [official installation instructions](https://docs.astral.sh/uv/getting-started/installation/). Then clone the repository and run the same `uv sync` and `uv run ...` commands above.
 
 For VS Code, select `.venv/bin/python` instead of the Windows path. Neither environment activation, direnv, nor a particular editor is required.

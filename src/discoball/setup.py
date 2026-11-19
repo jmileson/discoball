@@ -174,7 +174,7 @@ TABLES: list[Table] = [
 
 
 def main():
-    conn = duckdb.connect(DB)
+    conn = duckdb.connect(DB, config={"storage_compatibility_version": "v1.5.0"})
 
     for table in TABLES:
         file_name = OLIST_DIR / f"{table.name}.csv"
