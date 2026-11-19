@@ -344,6 +344,9 @@ You have completed the lesson when you can:
 - Explain the difference between `COUNT(*)` and `COUNT(column)`.
 - Describe a finding without inventing a cause or silently repairing data.
 
-Next, you can build on these habits to define metrics and combine tables safely. Python
-will give you a way to run the same SQL repeatedly as part of an analysis—not a
-replacement for understanding what your query means.
+Continue to [Lesson 2: What counts as bought together?](../lesson_2/README.md) to
+build on these habits, define a basket, and combine tables safely. In
+[Lesson 3](../lesson_3/README.md), you will measure category association; in
+[Lesson 4](../lesson_4/README.md), you will change the grain to customer history.
+Python will later give you a way to run the same SQL repeatedly as part of an
+analysis—not a replacement for understanding what your query means.
