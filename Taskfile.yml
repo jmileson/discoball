@@ -1,0 +1,29 @@
+version: '3'
+
+tasks:
+  pi:build:
+    desc: Build the Pi tooling image (not project dependencies).
+    cmds:
+      - podman build -f Dockerfile.pi -t pi-sandbox .
+
+  pi:
+    desc: Run Pi with isolated Python dependencies and masked local data/settings.
+    preconditions:
+      - sh: test -d .git
+        msg: Pi sandbox requires a checkout with a .git directory, not a linked worktree.
+    cmds:
+      - podman run --rm -it
+          --cap-drop=ALL
+          --security-opt=no-new-privileges
+          --memory=2g
+          --pids-limit=512
+          -v "$PWD:/workspace"
+          -v "$PWD/.git:/workspace/.git:ro"
+          -v /dev/null:/workspace/.env:ro
+          -v /dev/null:/workspace/.env.local:ro
+          -v /dev/null:/workspace/.envrc:ro
+          --tmpfs /workspace/node_modules
+          -v pi-venv:/workspace/.venv
+          -v pi-uv-cache:/root/.cache/uv
+          -v pi-agent-home:/root/.pi/agent
+          pi-sandbox {{.CLI_ARGS}}
