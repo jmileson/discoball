@@ -156,6 +156,8 @@ These lessons use local DuckDB; you do not need a MotherDuck account. The side q
 
 Return to these sections when you need them rather than reading them as additional lessons:
 
+- [DuckDB SQL reference](src/discoball/sql_reference.md): query basics, SQL Server comparisons, project conventions, and common analytical pitfalls.
+
 - [Everyday workflow](#everyday-workflow): commands for running Python and managing dependencies.
 - [Formatting, linting, and type checking](#formatting-linting-and-type-checking): checks to use when you start changing Python code.
 - [What's in the repository?](#whats-in-the-repository): where to find code, data, lessons, and configuration.

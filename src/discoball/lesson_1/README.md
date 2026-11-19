@@ -9,6 +9,10 @@ analytical habit: separating what a result shows from what you assume it means.
 
 Allow about 45–60 minutes. You do not need previous SQL experience.
 
+Keep the [DuckDB SQL reference](../sql_reference.md) handy for syntax reminders,
+SQL Server comparisons, and explanations of types, joins, dates, and missing values.
+It is a lookup guide, not extra reading you need to finish before this lesson.
+
 ## Before you start
 
 Complete the [project setup](../../../README.md), including installing DBeaver Community
