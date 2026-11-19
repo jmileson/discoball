@@ -1,0 +1,32 @@
+[project]
+name = "discoball"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Joe Mileson", email = "j.mileson@gmail.com" }
+]
+requires-python = ">=3.15"
+dependencies = [
+    "duckdb>=2.0.0",
+    "pandas>=3.1.1",
+    "polars>=2.1.0",
+]
+
+[project.scripts]
+discoball = "discoball:main"
+
+[build-system]
+requires = ["uv_build>=0.13.9,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.ruff.lint]
+# Keep Ruff's default rules and also check import ordering.
+extend-select = ["I"]
+
+[dependency-groups]
+dev = [
+    "ipython>=9.18.1",
+    "ruff>=0.17.5",
+    "ty>=0.0.107",
+]
