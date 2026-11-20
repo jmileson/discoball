@@ -8,6 +8,15 @@ silently change the population or the meaning of a row.
 
 Allow about 60–90 minutes. Complete [Lesson 5](../lesson_5/README.md), then open [explore.py](explore.py).
 
+## Optional side quests
+
+Take these when you want more practice; none is required before Lesson 7.
+Each uses small synthetic tables rather than modifying the source files.
+
+1. [Think in expressions](expressions.md): column instructions, contexts, and dependencies.
+2. [Types, nulls, and messy inputs](types_nulls.md): conversions, missing values, and NaN.
+3. [Joins and analytical grain](joins.md): coverage, duplicate keys, and validation.
+
 ## 1. Run a dataframe workflow
 
 From the project terminal:

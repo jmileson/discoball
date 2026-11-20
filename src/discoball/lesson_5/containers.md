@@ -128,6 +128,13 @@ keys or values automatically.
 default. `.get("D", 0)` supplies zero instead, which is appropriate only if missing
 really means zero for this task. A convenient default must not hide missing data.
 
+**Your turn**: What does the following print?
+
+```python
+counts = {"A": 20, "B": 10, "C": None}
+print(counts.get("C", 0))
+```
+
 ## 6. Pair iteration with positions or another sequence
 
 ```python

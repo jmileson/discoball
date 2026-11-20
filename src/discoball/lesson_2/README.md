@@ -17,6 +17,10 @@ By the end, you will have a category-pair summary and a clear explanation of wha
 count represents. You will use SQL joins, common table expressions, and temporary views
 along the way.
 
+Optional depth: [Grain, joins, and missing matches](joins_side_quest.md)
+uses tiny examples to investigate row multiplication and population changes.
+You can complete the main lesson without taking this side quest.
+
 ## 1. Define a basket before counting one
 
 For this investigation, use these working definitions:

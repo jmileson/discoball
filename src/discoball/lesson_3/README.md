@@ -14,6 +14,10 @@ disconnected, rerun its four temporary view definitions in order: `basket_catego
 `basket_pairs`, `basket_pair_counts`, and `basket_category_counts`. Do not change the
 eligibility rules between those views.
 
+Optional depth: [Nulls, denominators, and conditional aggregation](denominators_side_quest.md)
+explores how missing values and filtering change a measure. It is not required
+for progress through the main lesson.
+
 ## 1. Keep the denominator visible
 
 Your population is **delivered orders with at least one usable category**. It includes
