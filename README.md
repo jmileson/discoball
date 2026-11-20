@@ -141,10 +141,17 @@ Each lesson is a Markdown file named `README.md` in its own folder under `src/di
 | [Lesson 3: Common together, or unusually associated?](src/discoball/lesson_3/README.md) | Interpret support, confidence, and lift alongside the counts behind them. |
 | [Lesson 4: Same customer, different question](src/discoball/lesson_4/README.md) | Compare basket affinity with customer-history affinity and recognize what each can answer. |
 | [Lesson 4 side quest: From your query to a shared workflow](src/discoball/lesson_4/platform_side_quest.md) | Plan a dependable shared analysis and collaborate with data engineering. |
+| [Lesson 5: Your first analyst workflow in Python](src/discoball/lesson_5/README.md) | Use variables, functions, paths, and clear failures to inspect inputs. |
+| [Lesson 5 side quest: Try an idea with IPython](src/discoball/lesson_5/ipython_side_quest.md) | Explore interactively, inspect values, and move experiments into reproducible scripts. |
+| [Lesson 5: Optional Python foundations track](src/discoball/lesson_5/README.md#optional-python-foundations-track) | Go deeper into containers, text/files, numbers, functions, and objects, in that order. |
+| [Lesson 6: Explore familiar data with Polars](src/discoball/lesson_6/README.md) | Work with dataframes, expressions, filtering, grouping, and types. |
+| [Lesson 7: Rebuild basket affinity with Polars](src/discoball/lesson_7/README.md) | Preserve the SQL definitions while rebuilding joins, pairs, and measures. |
+| [Lesson 8: Choose where the work belongs](src/discoball/lesson_8/README.md) | Reconcile SQL and Polars results and reason about execution and data movement. |
+| [Lesson 9: Deliver an analysis—not just a spreadsheet](src/discoball/lesson_9/README.md) | Produce an Excel review pack and decide whether it is the right deliverable. |
 
 Read the lessons in order: later lessons build on the definitions and SQL from earlier ones. For each lesson:
 
-1. Read the explanation, then run each SQL block in DBeaver against your local `.data/dev.duckdb` connection. Run PowerShell commands in the VS Code terminal, not the SQL editor.
+1. Read the explanation, then run each SQL block in DBeaver against your local `.data/dev.duckdb` connection. Run PowerShell commands in the VS Code terminal, not the SQL editor. From Lesson 5 onward, open the linked Python files in VS Code and run the module commands from the repository root. Python code blocks are explained excerpts or scratch examples, not SQL for DBeaver.
 2. Pause at **Your turn** and other questions. Save your queries as a SQL script and keep a short note of your results, assumptions, and unanswered questions.
 3. Check what each result represents before moving on. A query running successfully is not the same as answering the intended question.
 

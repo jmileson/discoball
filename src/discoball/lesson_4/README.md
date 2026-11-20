@@ -389,6 +389,7 @@ Before moving on, take the [side quest: From your query to a shared
 workflow](platform_side_quest.md) to explore how your analysis could become a dependable
 shared deliverable, and how to collaborate with data engineering.
 
-A useful next step is to run a chosen analysis from Python with explicit period and
-eligibility parameters, save the results, and make the checks repeatable. Automating the
-query should preserve these definitions—not hide them.
+Continue to [Lesson 5: Your first analyst workflow in Python](../lesson_5/README.md).
+You will learn Python and Polars, reproduce the basket analysis, compare execution
+approaches, and deliver an Excel review pack. Automating the work should preserve
+these definitions—not hide them.
