@@ -46,9 +46,9 @@ def parse_review(raw: object) -> CategoryReview:
 
 def main() -> None:
     csv_path, json_path = write_example_files(OUTPUT_DIR)
-    with csv_path.open(encoding="utf-8", newline="") as source:
+    with open(csv_path, newline="") as source:
         reviews = [parse_review(row) for row in csv.DictReader(source)]
-    with json_path.open(encoding="utf-8") as source:
+    with open(json_path) as source:
         raw = json.load(source)
     if not isinstance(raw, list):
         raise TypeError("Expected a JSON array of review records.")

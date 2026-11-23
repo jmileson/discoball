@@ -192,8 +192,8 @@ need explanation. Shorter is not automatically clearer.
 
 ## Optional: traverse iterables with itertools
 
-An **iterable** supplies values for iteration. Some iterable objects, including
-many iterators, are consumed as you traverse them; they are not reusable lists.
+An **iterable** is something you can loop over with a `for` loop, such as a list
+or a string.
 
 - `chain(first, second)` traverses the first iterable, then the second.
 - `islice(values, 5)` takes at most five values without first making a full list.

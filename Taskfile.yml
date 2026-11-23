@@ -15,6 +15,7 @@ tasks:
       - podman run --rm -it
           --cap-drop=ALL
           --security-opt=no-new-privileges
+          --security-opt=label=disable
           --memory=2g
           --pids-limit=512
           -v "$PWD:/workspace"

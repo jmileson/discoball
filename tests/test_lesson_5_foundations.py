@@ -42,9 +42,9 @@ class FoundationTests(unittest.TestCase):
     def test_csv_json_round_trip_and_replacement(self):
         with tempfile.TemporaryDirectory() as folder:
             csv_path, json_path = write_example_files(Path(folder))
-            with csv_path.open(encoding="utf-8", newline="") as source:
+            with open(csv_path, newline="") as source:
                 csv_rows = list(csv.DictReader(source))
-            with json_path.open(encoding="utf-8") as source:
+            with open(json_path) as source:
                 json_rows = json.load(source)
             self.assertEqual(csv_rows[0]["category"], "Health, beauty")
             self.assertIsInstance(csv_rows[0]["basket_count"], str)

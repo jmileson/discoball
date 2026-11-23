@@ -126,7 +126,7 @@ used as a default would not update itself on every call. Use a deliberate patter
 for values that need to be computed per invocation. If `None` is itself a meaningful
 explicit input, a separate sentinel may be needed; that is beyond this exercise.
 
-## 5. Recognize *args and **kwargs
+## 5. Recognize \*args and \*\*kwargs
 
 ```python
 def format_notes(*notes, separator="; "):
@@ -194,8 +194,7 @@ value can still be overridden at call time; it is convenience, not a policy lock
 
 `sorted(rows, key=itemgetter("count"), reverse=True)` uses `operator.itemgetter`
 to obtain a dictionary value for sorting. `operator.attrgetter` does the same for
-object attributes; you will encounter those in the next side quest. The module
-name is `operator`, singular.
+object attributes; you will encounter those in the next side quest.
 
 A **callable** is something you can call with parentheses, including a function.
 Passing `itemgetter("count")` as `key` supplies an operation for `sorted` to call

@@ -398,7 +398,7 @@ from discoball.const import OLIST_DIR
 
 input_path = OLIST_DIR / "orders.csv"
 
-with input_path.open(encoding="utf-8") as source:
+with open(input_path) as source:
     header = source.readline().strip()
 
 print(header)
@@ -441,7 +441,7 @@ Find these pieces:
 | `def describe_file(path: Path) -> str:` | Define one file-inspection operation. |
 | `if not path.is_file():` | Check for a missing file before trying to open it. |
 | `raise FileNotFoundError(...)` | Stop with an explicit explanation. |
-| `with path.open(...) as source:` | Read using a managed file handle. |
+| `with open(path) as source:` | Read using a managed file handle. |
 | `header.startswith(...)` | Detect the text identifying a Git LFS placeholder. |
 | `path.stat().st_size` | Ask the filesystem for the file size in bytes. |
 | `return f"..."` | Return a description; `\n` inserts a line break. |

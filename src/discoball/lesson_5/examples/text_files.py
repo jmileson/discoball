@@ -21,11 +21,11 @@ def write_example_files(output_dir: Path) -> tuple[Path, Path]:
         }
         for row in rows
     ]
-    with csv_path.open("w", encoding="utf-8", newline="") as target:
+    with open(csv_path, "w", newline="") as target:
         writer = csv.DictWriter(target, fieldnames=["category", "basket_count"])
         writer.writeheader()
         writer.writerows(cleaned)
-    with json_path.open("w", encoding="utf-8") as target:
+    with open(json_path, "w") as target:
         json.dump(cleaned, target, ensure_ascii=False, indent=2)
     return csv_path, json_path
 
@@ -37,10 +37,10 @@ def main() -> None:
     print("UTF-8 bytes:", len(payload))
     print("Decoded:", payload.decode("utf-8"))
     csv_path, json_path = write_example_files(OUTPUT_DIR)
-    with csv_path.open(encoding="utf-8", newline="") as source:
+    with open(csv_path, newline="") as source:
         for row in csv.DictReader(source):
             print("CSV record:", row, "count type:", type(row["basket_count"]).__name__)
-    with json_path.open(encoding="utf-8") as source:
+    with open(json_path) as source:
         records = json.load(source)
     print("JSON records:", records)
     print(f"Wrote {csv_path} and {json_path}; rerunning replaces these files.")

@@ -24,19 +24,19 @@ fractions. Python integers are not limited to a fixed 32-bit range, although hug
 values still consume memory and computation.
 
 Type is not a unit. Python does not know whether `100` means baskets, customers,
-pounds, or pence. Use names and documented assumptions to keep them distinct.
+dollars, or cents. Use names and documented assumptions to keep them distinct.
 
 ## 2. Read arithmetic explicitly
 
-| Operation | Example | Result |
-| --- | --- | --- |
-| Addition | `5 + 2` | `7` |
-| Subtraction | `5 - 2` | `3` |
-| Multiplication | `5 * 2` | `10` |
-| Division | `5 / 2` | `2.5` |
-| Floor division | `5 // 2` | `2` |
-| Remainder | `5 % 2` | `1` |
-| Exponentiation | `5 ** 2` | `25` |
+| Operation      | Example  | Result |
+| -------------- | -------- | ------ |
+| Addition       | `5 + 2`  | `7`    |
+| Subtraction    | `5 - 2`  | `3`    |
+| Multiplication | `5 * 2`  | `10`   |
+| Division       | `5 / 2`  | `2.5`  |
+| Floor division | `5 // 2` | `2`    |
+| Remainder      | `5 % 2`  | `1`    |
+| Exponentiation | `5 ** 2` | `25`   |
 
 Multiplication and division have priority over addition and subtraction.
 Exponentiation has higher priority still. Prefer parentheses when the intended
@@ -148,11 +148,11 @@ Run:
 uv run python -m discoball.lesson_5.examples.numbers
 ```
 
-The final calculation uses **invented** inputs: 8,000 A baskets without B, £5 of
-contribution per additional purchase, and £1,000 to recover. If every one of those
-baskets added B, the contribution ceiling would be £40,000 before other effects.
-Recovering £1,000 would require 200 additional purchases, or 2.5% of those 8,000
-opportunities, under these assumptions.
+The final calculation uses **invented** inputs in US dollars: 8,000 A baskets
+without B, $5 of contribution per additional purchase, and $1,000 to recover. If
+every one of those baskets added B, the contribution ceiling would be $40,000
+before other effects. Recovering $1,000 would require 200 additional purchases,
+or 2.5% of those 8,000 opportunities, under these assumptions.
 
 This is an optimistic scenario and a break-even calculation, not an estimate of
 actual intervention effects. The dataset does not supply those margins or costs.

@@ -23,13 +23,13 @@ def main() -> None:
         amount.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP),
     )
 
-    # Invented commercial inputs, not values measured from Olist.
+    # Invented commercial inputs in US dollars, not values measured from Olist.
     missing_b_baskets = 8_000
     margin_per_addition = Decimal("5.00")
     cost_to_recover = Decimal("1000.00")
     ceiling = missing_b_baskets * margin_per_addition
     break_even_rate = cost_to_recover / ceiling
-    print("Hypothetical optimistic contribution ceiling:", ceiling)
+    print(f"Hypothetical optimistic contribution ceiling: ${ceiling:,.2f}")
     print(f"Hypothetical break-even additional attachment: {break_even_rate:.1%}")
     print("This scenario is not a prediction of an intervention's effect.")
 

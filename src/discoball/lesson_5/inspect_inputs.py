@@ -6,7 +6,7 @@ from discoball.const import OLIST_DIR
 def describe_file(path: Path) -> str:
     if not path.is_file():
         raise FileNotFoundError(f"Missing input: {path}. Check the project setup.")
-    with path.open(encoding="utf-8") as source:
+    with open(path) as source:
         header = source.readline().strip()
     if header.startswith("version https://git-lfs.github.com/spec/v1"):
         raise ValueError(f"{path.name} is a Git LFS placeholder. Run git lfs pull.")

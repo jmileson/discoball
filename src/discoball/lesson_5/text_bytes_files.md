@@ -80,15 +80,27 @@ reflexively use `errors="ignore"`: that can silently delete meaningful data.
 Some wrong encodings produce garbled text without an exception, so successful
 decoding alone is not proof that the chosen encoding is correct.
 
-Use bytes for binary files, compressed content, raw network payloads, or exact
-byte-level checks. Decode known text at the boundary and use strings for ordinary
+In analytical work, bytes often show up when you receive data or work with
+something other than a text column:
+
+- **Encrypted values:** An export may contain encrypted fields. The underlying
+  ciphertext is bytes, even if the export displays it as Base64 text. Decoding
+  Base64 gives you the ciphertext, not the original value.
+- **File hashing:** Hash the raw bytes of two downloaded exports to check whether
+  they are byte-for-byte identical, without needing to parse either file.
+- **Images and audio:** A product photo or a recording may arrive as bytes. Use a
+  format-aware library to turn those bytes into pixels or audio samples you can
+  analyze.
+
+Bytes also show up in compressed files and raw network responses. Decode data
+with a character encoding when you know it represents text, then use strings for
 text manipulation. CSV and JSON text usually do not need a manual binary step.
 
 ## 4. Choose a file mode and manage its lifetime
 
 | Mode | Purpose | Caution |
 | --- | --- | --- |
-| `"r"` | Read text; the default | File must exist. Specify the encoding. |
+| `"r"` | Read text; the default | File must exist. |
 | `"w"` | Write text | Creates or truncates the file immediately. |
 | `"a"` | Append text | Does not ensure the appended text preserves a structured format. |
 | `"x"` | Create a new text file | Fails if the path already exists. |
@@ -101,7 +113,7 @@ file: you can iterate over a text file line by line.
 ```python
 from discoball.const import OLIST_DIR
 
-with (OLIST_DIR / "orders.csv").open(encoding="utf-8") as source:
+with open(OLIST_DIR / "orders.csv") as source:
     for position, line in enumerate(source, start=1):
         print(position, line.rstrip("\r\n"))
         if position == 3:
@@ -130,8 +142,8 @@ Inspect the code and the CSV file. One label contains a comma, so the writer quo
 it correctly. `csv.DictReader` supplies a dictionary per record, keyed by header
 name. `csv.reader` instead supplies a list of fields per record.
 
-For CSV text files, open with `encoding="utf-8", newline=""` so the CSV module
-controls newline handling. Writing uses `DictWriter`, an explicit field list,
+For CSV text files, pass `newline=""` to `open()` so the CSV module controls
+newline handling. Writing uses `DictWriter`, an explicit field list,
 `writeheader()`, and `writerows(...)`.
 
 The reader returns text fields in this example, even for `basket_count`. The
