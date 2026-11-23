@@ -7,6 +7,15 @@ goal is not to prove that one language is better. It is to preserve definitions,
 understand the transformations, and check that the implementation answers the same
 question.
 
+Rebuilding gives you a second practical route from inputs to analytical information.
+When a platform does not yet provide a needed analysis, you can prototype with
+approved local data and still carry forward explicit definitions and checks. The
+point is to gain an option, not to declare that every SQL query should be rewritten.
+
+Your output is a checked Polars implementation and an explanation of how its steps
+preserve the SQL analysis. In Lesson 8, you will compare every observed pair rather
+than relying on a few matching preview rows.
+
 Allow about 90 minutes. Complete [Lesson 6](../lesson_6/README.md), and keep Lessons 2
 and 3 nearby. The complete implementation is in [affinity.py](affinity.py).
 
@@ -21,7 +30,9 @@ Before running anything, restate the rules:
 - Store each unordered category pair once per basket.
 - Calculate support, both confidences, and lift from the same population.
 
-Do not change the eligibility rules to make the Polars result look more interesting.
+Use the definitions in your investigation record as the contract for the rebuild.
+Keep them fixed so that differences reveal something about the implementation,
+rather than silently becoming a different analysis.
 
 Run:
 
@@ -50,9 +61,13 @@ Read the join contracts:
 ```
 
 `1:m` requires unique order keys on the left. `m:1` requires unique product keys on the
-right. These options turn lookup-key assumptions into explicit checks. They do not
-guarantee complete matching coverage: inner joins can still discard unmatched records,
-just as they do in SQL.
+right. These options turn lookup-key assumptions into explicit checks.
+
+> **Watch out — join validation checks multiplicity, not coverage**
+>
+> A validated inner join can still discard unmatched records. Check retained
+> populations as well as key relationships; `validate="m:1"` is not a promise that
+> every item found a product. This distinction is the same as in SQL.
 
 The filter removes null and blank categories. It checks stripped text for emptiness but
 does not otherwise rename or merge category keys. Finally, `select(...).unique()`
@@ -74,10 +89,11 @@ filtered:
 This is the same canonical ordering used in SQL. It excludes self-pairs and reversed
 duplicates. It does not establish purchase sequence.
 
-The join creates candidate combinations before the filter removes unwanted ones. Large
-baskets can create many combinations, so this pattern is not automatically appropriate
-at every scale. Profile basket sizes and execution behavior before applying it to a
-substantially larger workload.
+> **Watch out — pair generation can expand the work substantially**
+>
+> The join creates candidate combinations before filtering them. Large baskets can
+> create many combinations, even if the final summary is small. Profile basket sizes
+> and execution behavior before reusing this pattern on a substantially larger workload.
 
 After grouping, the output grain is one category pair, with `pair_baskets` counting
 baskets containing both.
@@ -93,8 +109,13 @@ and adds the total eligible population as a literal column.
 
 The first `with_columns` calculation step defines support and confidence. A later step
 defines lift using the new confidence column. Splitting these steps makes the dependency
-explicit; sibling expressions in one `with_columns` call should not be treated as
-sequential assignments.
+explicit.
+
+> **Watch out — sibling expressions are not sequential assignments**
+>
+> Do not define a confidence column and then reference that new column in a sibling
+> expression within the same `with_columns` call. Use a later call for the dependent
+> calculation. A chain of calls makes the dependency explicit.
 
 The denominators are positive for observed pairs from a non-empty valid basket
 population. The function rejects an empty population and checks the resulting count
@@ -102,8 +123,8 @@ bounds. Unlike the defensive SQL formula, it does not introduce `NULLIF` into ev
 division because its input contract establishes those conditions.
 
 **Your turn:** use one result row to calculate support, both confidence values, and lift
-by hand. Compare with the unrounded result. Do not infer that either category caused the
-other purchase.
+by hand. Compare with the unrounded result. The interpretation remains the one from
+Lesson 3: these are measures of observed association, not effects of an intervention.
 
 ## 5. Test a small example you can understand completely
 
@@ -140,9 +161,21 @@ Repeat Lesson 2's basket-size summary in Polars. Expect 94,423 baskets with one
 category, 708 with two, and 15 with three. If that does not match, stop before comparing
 affinity rankings.
 
-Save a short explanation of the three grains in your implementation and the assumptions
-checked by each function. Keep the result as an analytical candidate list, not a
-validated recommendation model.
+Update the implementation section of your investigation record with:
+
+- The three grains and the transformations that create them.
+- Which assumptions each function checks.
+- The result of the basket-size reconciliation and the small-example tests.
+- Any differences from the SQL implementation that you still need to investigate.
+
+The business interpretation has not changed: this remains a candidate list for
+investigation. A second implementation gives you another way to produce it, not
+additional purchase evidence.
+
+**What you can do now:** rebuild a relational analysis with dataframe operations,
+turn join and grain assumptions into checks, and test calculations against an example
+you can reason through completely. Next you will test agreement across the full
+observed pair result.
 
 Continue to [Lesson 8](../lesson_8/README.md) to reconcile every pair with SQL and
 choose where different parts of the workload belong.

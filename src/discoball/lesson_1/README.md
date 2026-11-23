@@ -7,7 +7,15 @@ In this lesson, you will connect to DuckDB with DBeaver, explore the Olist marke
 data, and answer your first questions with SQL. You will also practice an important
 analytical habit: separating what a result shows from what you assume it means.
 
-Allow about 45–60 minutes. You do not need previous SQL experience.
+A team is interested in exploring which product categories customers buy together.
+Before you can investigate that, you need to understand the records: their coverage,
+identifiers, and what one row represents. This lesson gives you those starting points.
+You will produce saved queries and the first entry in an investigation record that
+will grow through the course.
+
+As a working estimate, allow about 45–60 minutes after project setup, with extra
+time for your first DBeaver connection or SQL session. You do not need previous SQL
+experience.
 
 Keep the [DuckDB SQL reference](../sql_reference.md) handy for syntax reminders,
 SQL Server comparisons, and explanations of types, joins, dates, and missing values.
@@ -277,8 +285,11 @@ to be true.
 4. What does it leave unknown about the real deliveries or the data pipeline?
 5. What would you ask the platform team before excluding or changing these records?
 
-Do not fill in a timestamp just to make the data complete. An invented value can make an
-analysis look more certain while making it less trustworthy.
+> **Watch out — filling a gap can invent evidence**
+>
+> Do not fill in a timestamp just to make the data complete. An invented value can
+> make an analysis look more certain while making it less trustworthy. Record the
+> gap and clarify its meaning before deciding how the analysis should handle it.
 
 ## 7. Notice the questions you will need to resolve next
 
@@ -318,14 +329,22 @@ Imagine an order with two items and two payment records. Joining both sets direc
 the order identifier can produce four rows: every item paired with every payment.
 Summing item prices or payments afterwards can double-count them.
 
-This is a row-multiplication problem, not necessarily bad source data. In a later
-lesson, you will check relationships and aggregate tables to a suitable grain before
-combining them.
+> **Watch out — joining tables can multiply records**
+>
+> Those four rows are a consequence of the join, not necessarily bad source data.
+> Before summing, check what one joined row represents. Later lessons will give you
+> practice checking relationships and preparing data at the grain the question needs.
 
 ## 8. Save a short analytical note
 
-Save your queries in DBeaver as a SQL script, and write a short note alongside your work
-using this structure:
+Save your queries in DBeaver as a SQL script, and start an investigation record
+alongside your work using this structure. A plain text or Markdown file is enough;
+you will extend it as the question develops, not start a separate report each lesson.
+Use brief bullets and actual results. Update existing definitions rather than copying
+them into each entry. Keep queries and scripts separately and refer to them from the
+record; this is a working analytical notebook, not a polished submission each time.
+
+Start with:
 
 ```text
 Question:
@@ -335,11 +354,14 @@ Query used:
 Result:
 What the result supports:
 Limitations and unanswered questions:
-Next check or question for the platform team:
+Next check or question to clarify:
+What that check would help us decide:
 ```
 
 Use your delivered-order timestamp investigation as the example. Include the actual
-counts you found, not just “some values were missing.”
+counts you found, not just “some values were missing.” Your next step might be to
+clarify the source definition or ask a data owner or platform team; it does not
+have to be another query.
 
 You have completed the lesson when you can:
 
@@ -348,6 +370,11 @@ You have completed the lesson when you can:
 - Preview rows, inspect columns, filter records, and count groups.
 - Explain the difference between `COUNT(*)` and `COUNT(column)`.
 - Describe a finding without inventing a cause or silently repairing data.
+
+**What you can do now:** inspect an unfamiliar dataset, establish its recorded
+coverage, and support a finding with a reproducible query. You also know which
+customer identifiers and table grains need attention before counting purchases
+together. That is a practical foundation for a new question, not just a tour of tables.
 
 Continue to [Lesson 2: What counts as bought together?](../lesson_2/README.md) to
 build on these habits, define a basket, and combine tables safely. In

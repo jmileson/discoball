@@ -32,6 +32,15 @@ def main() -> None:
         wrap = workbook.add_format({"text_wrap": True, "valign": "top"})
         entries = [
             ("Purpose", "Historical category-pair review, not a recommendation model."),
+            ("Audience", "Merchandising team reviewing category-pair candidates."),
+            (
+                "Delivery role",
+                (
+                    "Generated snapshot, not the maintained analysis. Definitions, "
+                    "calculations, and checks live in the saved workflow, not embedded "
+                    "workbook queries or connections."
+                ),
+            ),
             ("Population", "Delivered orders with at least one usable category."),
             (
                 "Period",
@@ -41,7 +50,14 @@ def main() -> None:
                 "Grain",
                 "One row per unordered category pair; categories are original keys.",
             ),
-            ("Thresholds", "At least 10 shared baskets and 50 baskets per category."),
+            (
+                "Count cutoffs",
+                (
+                    "At least 10 shared baskets and 50 baskets per category. "
+                    "Screening choices only: retained for investigation, "
+                    "not validated recommendations."
+                ),
+            ),
             (
                 "Missing data",
                 "Uncategorized items excluded; partial baskets may remain.",
@@ -83,7 +99,7 @@ def main() -> None:
         )
         if candidates.is_empty():
             sheet = workbook.add_worksheet("Candidate pairs")
-            sheet.write_string(0, 0, "No pairs passed the evidence thresholds.")
+            sheet.write_string(0, 0, "No pairs passed the count cutoffs.")
             sheet.set_column("A:A", 65)
         else:
             candidates.write_excel(

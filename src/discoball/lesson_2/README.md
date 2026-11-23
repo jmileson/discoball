@@ -9,13 +9,25 @@ That sounds straightforward. But does “together” mean in one order, or acros
 visits by the same customer? Those are different questions. In this lesson, you will
 investigate categories bought in the **same order**.
 
+The team could use this information to choose category combinations to investigate
+for cross-selling. Before choosing any, they need to know which combinations occur
+and how much evidence sits behind them. You will build that starting point—not an
+automated recommendation service.
+
+This is part of business intelligence: turning records into information that helps
+someone decide what to do next. A report or dashboard could present the result, but
+the analytical value comes from defining the question, producing new information,
+and explaining how it can be used.
+
 Allow about 60–90 minutes. Complete [Lesson 1](../lesson_1/README.md) first. Keep
 DBeaver connected to your local database and run the queries below in order, in the same
 SQL editor session.
 
 By the end, you will have a category-pair summary and a clear explanation of what each
 count represents. You will use SQL joins, common table expressions, and temporary views
-along the way.
+along the way. Your output is a checked category-pair summary and an update to
+the analytical note you started in Lesson 1. Keep that note as your investigation
+record; later lessons will extend it rather than start a separate report each time.
 
 Optional depth: [Grain, joins, and missing matches](joins_side_quest.md)
 uses tiny examples to investigate row multiplication and population changes.
@@ -98,8 +110,13 @@ HAVING
 ;
 ```
 
-You should get no rows. `HAVING` filters groups after aggregation. If duplicates appear,
-stop and investigate rather than adding `DISTINCT` to hide a join problem.
+You should get no rows. `HAVING` filters groups after aggregation.
+
+> **Watch out — a lookup can multiply your rows**
+>
+> More than one product record per `product_id` can make an item appear several
+> times after the join. If this check finds duplicates, investigate before continuing.
+> Adding `DISTINCT` afterwards can hide the problem rather than resolve it.
 
 ## 3. Build one row per basket and category
 
@@ -179,9 +196,14 @@ A subquery is a query inside another query. Here, each parenthesized query produ
 single count.
 
 Your eligible basket population is now **delivered orders with at least one usable
-category**. An order with some missing categories can remain in the population, but its
-observed basket is incomplete. The exclusion count above measures completely
-unrepresented orders, not every order affected by missing information.
+category**.
+
+> **Interpretation limit — retained baskets can still be incomplete**
+>
+> An order with some missing categories can remain in the population. The exclusion
+> count measures completely unrepresented orders, not every order affected by missing
+> information. Missing categories cannot contribute to observed pairs. Keep this
+> distinction in your note when describing category coverage.
 
 **Record:** the two population counts, the exclusion count, and how partially missing
 categories could affect the result.
@@ -220,10 +242,16 @@ eligible baskets: 94,423 with one category, 708 with two, and 15 with three. Onl
 723 baskets—about 0.76%—can contribute category pairs. If your counts differ,
 check the delivered-order filter and category deduplication before continuing.
 
-A large order table does not automatically give you a large amount of evidence
-about categories bought together. Sparse pair counts are an expected feature of
-this exercise, not a sign that you failed to find the right query. You may conclude
-that a pairing needs more evidence rather than recommending it.
+You have already learned something useful for the team: under these definitions,
+cross-category purchases within an order are uncommon. That helps set the scope of
+the investigation before anyone treats the order count as evidence for cross-selling.
+
+> **Interpretation limit — orders are not all evidence of category pairing**
+>
+> Only the 723 multi-category baskets can contribute pairs. Sparse pair counts are
+> an expected feature of this exercise, not a sign that you failed to find the right
+> query. Use the pair counts to decide which relationships merit further investigation;
+> the size of the full order table alone cannot establish that.
 
 **Your turn:** explain why counting items would give a different answer from counting
 categories.
@@ -289,8 +317,11 @@ Read the `ON` conditions together:
 - `a.category_name < b.category_name`: keep one consistently ordered representation
   of each pair, with no category paired with itself.
 
-The earlier deduplication matters too. Because `basket_categories` has only one row
-per order and category, repeated items cannot create extra copies of the same pair.
+> **Watch out — repeated items can inflate pair counts**
+>
+> The `<` condition removes self-pairs and reversed pairs; it does not remove repeated
+> category occurrences in the input. The earlier deduplication makes repeated items
+> contribute just one occurrence of each category per basket. Keep both steps.
 
 The names `category_a` and `category_b` label the two output columns. They do **not**
 mean that A was purchased before B, that A caused B, or that the pair has a direction.
@@ -396,18 +427,40 @@ LIMIT 20
 simply combine two popular categories. Shared-basket counts alone do not tell you
 whether the relationship is unusual.
 
-## 7. Write a finding, not a sales promise
+## 7. Turn your summary into a useful finding
 
-Choose one pair and record:
+You can now answer a question that individual order records did not answer directly:
+which category combinations occur in the same delivered orders, and how often?
+The checked summary is useful information even before it becomes a chart or workbook.
+
+Extend your investigation record from Lesson 1. Choose one pair and record:
 
 - Your definition of an eligible basket and the total eligible population.
 - The number of baskets containing both categories.
 - The number containing each category individually.
 - The amount of missing category information you measured.
+- What this pair suggests the team could investigate next, and why.
 - One thing you would check before recommending the pair to customers.
 
-Do not claim that displaying one category will cause someone to purchase the other. This
-analysis describes observed orders; it is not an experiment.
+> **Interpretation limit — observed purchases are not an intervention**
+>
+> These counts describe existing orders. They do not show that displaying one category
+> will cause someone to purchase the other. If the team wants to try a cross-sell
+> placement, its effect needs an evaluation suited to that use.
+
+Write a short finding for the team, using your actual counts:
+
+```text
+Among [N] eligible baskets, [AB] contained both [A] and [B].
+Individually, these categories appeared in [A count] and [B count] baskets.
+This makes the pair worth investigating because [reason], or leaves too little
+observed evidence to prioritise it because [reason].
+Our next check is [specific check], which would help us decide [decision].
+```
+
+A common pair may simply combine popular categories. That gives you a concrete next
+question: is the pair common because its categories are common, or do they occur
+together unusually often?
 
 You have completed the lesson when you can explain all three grains:
 
@@ -415,5 +468,9 @@ You have completed the lesson when you can explain all three grains:
 2. One row per order and category pair.
 3. One row per category pair, summarized across orders.
 
+**What you can do now:** turn item records into a checked basket-category dataset,
+generate pairs without double-counting, and explain the population behind a finding.
+These are reusable analytical skills, not just steps for this particular question.
+
 Continue to [Lesson 3](../lesson_3/README.md) to distinguish common pairs from unusually
-associated categories.
+associated categories and give the team a better basis for prioritising investigation.

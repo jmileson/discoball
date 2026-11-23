@@ -9,6 +9,12 @@ You can reuse much of your basket-affinity approach. But changing the unit of
 observation changes the meaning of the result. A customer with ten orders must not count
 as ten customers.
 
+The practical question is which evidence fits what the team wants to do. Exploring
+categories to display together, targeting customers from their histories, and asking
+what people buy next are related ideas, but they need different analyses. You will
+compare those questions and extend your investigation record with a recommended
+analytical path.
+
 Allow about 60–90 minutes. Complete [Lesson 3](../lesson_3/README.md) first. Use the
 same SQL session with the temporary views from Lessons 2 and 3 available. If you have
 reconnected, rerun those view definitions in lesson order before continuing.
@@ -31,9 +37,12 @@ This does **not** require the categories to occur in different orders. A custome
 buys A and B in one order qualifies. It also does not tell you which category was
 purchased first.
 
-“All available history” is a period choice, not a complete lifetime history. Customers
-first observed near the end of the dataset have less opportunity to make another
-recorded purchase. Purchases outside this dataset are invisible.
+> **Interpretation limit — observed history is not a lifetime history**
+>
+> Customers first observed near the end of the dataset have less opportunity to
+> make another recorded purchase. Purchases outside this dataset are invisible.
+> Keep the observation period alongside customer-history findings; “all available
+> history” does not give every customer an equal follow-up period.
 
 ## 2. Link orders to a stable customer identifier
 
@@ -143,11 +152,16 @@ Sum `customer_count` across all rows for the population, then across rows where
 `order_count > 1` for the repeat-order count. If your counts differ, check the
 eligibility rules and customer mapping before interpreting the difference.
 
-Most customers have only one eligible order in this snapshot. Customer-history
-affinity may therefore add relatively little evidence beyond basket affinity.
-That is a finding about the available observations, not proof that these people
-never bought again. Sparse repeat purchasing limits what you can learn; it is not
-a reason to pretend that same-basket purchases are later purchases.
+You can now tell the team how much observed history is available for their new idea.
+Most customers have only one eligible order, so changing to customer history may
+add relatively little evidence beyond basket affinity. That is useful when deciding
+whether to pursue a cross-visit investigation with this snapshot.
+
+> **Interpretation limit — one observed order does not mean no repeat purchasing**
+>
+> This profile describes eligible orders in this dataset. It does not establish that
+> these customers never bought again or elsewhere. Use it to describe the evidence
+> available here, not to label customers as people who never return.
 
 ## 4. Change the grain to customer and category
 
@@ -301,15 +315,19 @@ LIMIT 20
 ;
 ```
 
-The minimum of ten customers is an illustrative filter, not proof of reliability. Try
-other thresholds and report how sensitive the results are.
+As in Lesson 3, the minimum of ten customers is a screening choice: passing it means
+retained for investigation, not validated. Try other cutoffs and record how the
+candidate list changes.
 
 A `NULL` basket value here means the pair was absent from the observed basket-pair
 summary. It does not mean a calculation returned zero lift.
 
-Do not directly subtract pair counts and call the difference “cross-order customers.” A
-customer may contribute several baskets, one customer history, and both same-order and
-cross-order purchases. The populations and units differ.
+> **Watch out — subtracting different units does not isolate cross-order purchases**
+>
+> Do not subtract pair counts and call the difference “cross-order customers.” One
+> customer may contribute several baskets, one customer history, and both same-order
+> and cross-order purchases. To count cross-order evidence, keep the order identifiers
+> and test for different orders explicitly, as in the next section.
 
 If the two analyses look similar, use your repeat-order profile to help explain why.
 Similar results are not a failed exercise; they can reflect limited additional customer
@@ -356,25 +374,47 @@ This requires A and B to occur in different orders, but it still does **not** es
 a direction. A customer could also have bought both in the same order on another
 occasion.
 
-Answering “what do customers buy next?” requires another analysis: purchase timestamps,
-a definition of the next eligible order, treatment of ties, and a follow-up window.
-Sorting category names cannot establish purchase sequence. You should not use these
-unordered pairs to claim that buying A predicts a later purchase of B.
+> **Interpretation limit — different orders do not establish a direction**
+>
+> Answering “what do customers buy next?” requires purchase timestamps, a definition
+> of the next eligible order, treatment of ties, and a follow-up window. Sorting
+> category names cannot establish purchase sequence. These unordered pairs do not
+> show that buying A predicts a later purchase of B.
+
+You have separated three questions that can otherwise sound interchangeable. That
+lets you discuss the team's intended use before investing in a more complex analysis:
+
+| Proposed use to investigate | Relevant starting evidence |
+| --- | --- |
+| Categories to display together in a basket context | Same-basket co-occurrence |
+| Category suggestions informed by customer history | Customer-history relationships, with explicit checks for cross-order evidence if that is the intended basis |
+| Suggestions about a later purchase | A sequential analysis with defined timing and follow-up |
+
+These are starting points for investigation, not proof that a placement or suggestion
+will work. Testing an action is a separate step from describing past purchases.
 
 ## 8. Recommend an analytical path
 
-Write a short response to the merchandising team. Include:
+Use your evolving investigation record to write a short response to the merchandising
+team. Include:
 
 1. Whether their proposed use needs same-basket, customer-history, or sequential
 evidence.
 2. Your eligible population, observation period, and unit of analysis.
 3. One candidate pair with counts and measures, if the evidence supports one.
 4. How much repeat-purchase evidence is available.
-5. What this dataset cannot establish, and what you would investigate next.
+5. What this dataset cannot establish.
+6. A specific next check or action, what you would learn from it, and which decision
+that would help the team make.
 
-It is acceptable to conclude that the available history does not support a strong
-repeat-purchase recommendation. A useful analysis can prevent an unsupported decision as
-well as suggest an opportunity.
+For example, you might recommend clarifying whether the intended suggestion is for
+this basket or a later visit, checking a candidate across defined periods, or asking
+whether more follow-up history is available. Choose the step that addresses the
+uncertainty you actually found.
+
+It is acceptable to conclude that the available history does not support prioritising
+a repeat-purchase recommendation yet. Make that useful by identifying what evidence
+would change the conclusion and how the team could obtain or evaluate it.
 
 You have completed the lesson when you can explain why these are three different
 statements:
@@ -385,11 +425,19 @@ statements:
 
 The SQL patterns overlap. The questions, grains, and evidence requirements do not.
 
-Before moving on, take the [side quest: From your query to a shared
-workflow](platform_side_quest.md) to explore how your analysis could become a dependable
-shared deliverable, and how to collaborate with data engineering.
+**What you can do now:** adapt an analysis to a different unit of observation,
+measure how much evidence the change adds, and explain which question fits an
+intended use. You are helping the team choose an analytical path, not simply
+producing another version of the same report.
+
+For optional discussion, take the [side quest: From your query to a shared
+workflow](platform_side_quest.md). It explores how to describe a dependable shared
+deliverable and collaborate with data engineering. It does not require or assume
+that the future platform's capabilities and responsibilities have been settled.
 
 Continue to [Lesson 5: Your first analyst workflow in Python](../lesson_5/README.md).
 You will learn Python and Polars, reproduce the basket analysis, compare execution
-approaches, and deliver an Excel review pack. Automating the work should preserve
-these definitions—not hide them.
+approaches, and deliver an Excel review pack. Rebuilding is deliberate: with a familiar
+question and known results, you can focus on learning another tool and check that it
+preserves your definitions. You gain another option for exploration and prototyping,
+not a requirement to replace SQL.

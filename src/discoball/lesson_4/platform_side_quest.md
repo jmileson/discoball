@@ -15,7 +15,12 @@ where to collaborate with data engineering. You do not need a MotherDuck account
 new software. Keep using the local database from the earlier lessons.
 
 Allow about 45–60 minutes. Complete [Lesson 4](README.md) first. Your output will be a
-short workflow proposal, not a deployed pipeline.
+short workflow proposal, not a deployed pipeline. Keep it with your investigation
+record so the analytical definitions and the proposed workflow remain connected.
+
+This is an optional planning exercise. The Monday request is a scenario, not a
+commitment to provide a recurring service. Separate what you can demonstrate locally
+from what would need an agreed platform capability or owner.
 
 ## 1. Understand why you started locally
 
@@ -24,8 +29,21 @@ tables, test joins, and make analytical mistakes without modifying a shared prod
 dataset.
 
 The longer-term direction of this project is an analyst platform using MotherDuck,
-supported by data engineering practices. Moving there will not make your analytical
-definitions less important. It will make their consequences more widely shared.
+supported by data engineering practices. Its access paths, workspaces, publishing
+mechanisms, and operating responsibilities are not assumed to be available or settled
+by this lesson. Moving to shared work will not make your analytical definitions less
+important; it will make their consequences more widely shared.
+
+Keep three categories distinct in your proposal:
+
+| Category | What belongs here |
+| --- | --- |
+| Available now | Local queries, saved code, checks, and results you can reproduce |
+| Transferable practices | Explicit definitions, dependency tracking, validation, and responsible data handling |
+| Future agreements | Supported access, publication, recurring execution, and named owners |
+
+For a future agreement, write the need and the open question. Do not describe a
+capability as provided just because the workflow would benefit from it.
 
 A platform is more than a place to execute SQL. It includes shared data, access
 boundaries, supported ways to publish work, and people responsible for keeping those
@@ -259,7 +277,8 @@ table as inherently wrong.
 
 ## 8. Validate the solution together
 
-Suppose engineering provides a shared basket-category dataset. Your work is not finished
+As a planning scenario, suppose engineering later provides a shared basket-category
+dataset. This is not an asset supplied by this course. Your work would not be finished
 when the dataset appears.
 
 Compare it with your exploratory result for the same fixed period and eligibility rules.

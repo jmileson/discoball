@@ -6,9 +6,14 @@ Polars? Should everything stay in SQL?
 Neither is a useful universal rule. You need to consider the data, the workload, the
 supported platform, and who will maintain the result.
 
+This is the payoff of the rebuild: you can check that two implementations preserve
+the same answer, then choose how to do the work for a particular need. You will also
+see a third combination—Python running saved SQL and handling the returned summary.
+The tools can work together; you do not have to choose one language for everything.
+
 Allow about 60–90 minutes. Complete [Lesson 7](../lesson_7/README.md). You will run a
-local comparison, then write a workload recommendation. You do not need MotherDuck
-access.
+local comparison, then add its findings and a workload recommendation to your
+investigation record. You do not need MotherDuck access.
 
 ## 1. Separate language from execution location
 
@@ -48,13 +53,22 @@ tolerance. Count dtypes can differ between engines, so this exercise ignores dty
 differences while preserving column names and comparing values. A production output also
 needs an explicit schema contract.
 
-You should see a message confirming agreement across all observed category pairs. If the
-comparison fails, investigate definitions, data versions, types, and coverage before
-adjusting tolerances. The setup database does not automatically refresh when the CSVs
-change.
+You should see a message confirming agreement across all observed category pairs.
+That is stronger than matching a few rows from the top of each ranking: the comparison
+checks the complete observed pair output, including its counts and rates.
 
-This is a correctness comparison, not a benchmark. One run cannot establish which engine
-is faster in general.
+If the comparison fails, investigate definitions, data versions, types, and coverage
+before adjusting tolerances. The setup database does not automatically refresh when
+CSVs change. Exact count differences need an explanation, not a floating-point allowance.
+
+> **Interpretation limit — agreement is not independent business validation**
+>
+> Both implementations can agree while sharing an unsuitable definition or source
+> limitation. Agreement supports implementation consistency for these inputs; it does
+> not add purchase evidence or establish that a recommendation will work.
+
+This is a result comparison, not a benchmark. You have not measured which engine is
+faster in general.
 
 ## 3. Notice the data movement
 
@@ -67,6 +81,10 @@ dependency to the lesson. It would be a poor default for an unbounded raw-data e
 it materializes Python rows before constructing the dataframe. At larger scale, discuss
 supported transfers, batching, lazy execution, and whether the transfer is needed at
 all.
+
+**What this enables:** Python can coordinate a workflow while the database performs
+the joins and calculations. You can reuse SQL you trust and bring just its summary
+into another tool for checks, further analysis, or presentation.
 
 **Your turn:** identify each place data crosses a boundary: file to engine, engine to
 Python rows, and rows to dataframe. Which boundary would become a concern if the raw
@@ -85,6 +103,11 @@ input were hundreds of gigabytes?
 
 Polars is not only for small data, and SQL is not only for remote data. This table
 suggests starting questions, not hard size cutoffs or performance guarantees.
+
+The course rebuilt the analysis to teach an alternative and test preservation of its
+meaning. Maintaining two implementations indefinitely is a separate choice. For a real
+deliverable, choose a supported approach that meets the need; keep a second version
+only when its value justifies the extra maintenance.
 
 Do not export a large shared table merely because a notebook is convenient. First ask
 whether filtering and aggregation can happen where the data already lives. Equally, do
@@ -114,9 +137,10 @@ For a future shared-platform version, ask:
 - Should the result remain a table/view, or be delivered as a file?
 - Who owns shared definitions, recurring execution, and failures?
 
-Use the platform team's documented access and execution patterns when available. This
-lesson does not provide credentials, assume that all SQL runs remotely, or authorize
-uploading local data.
+Use the platform team's documented access and execution patterns when available.
+These are questions for a future agreement, not capabilities this lesson supplies.
+The lesson does not provide credentials, assume that all SQL runs remotely, or
+authorize exporting restricted data or uploading local data.
 
 Refer back to the [platform side quest](../lesson_4/platform_side_quest.md): an
 evidence-based capability request is often more valuable than choosing a tool before
@@ -130,12 +154,26 @@ Choose one scenario:
 - A weekly summary of large, access-controlled platform tables.
 - A small Excel review pack generated from an approved summary.
 
-Write a proposal identifying where data lives, where each transformation should run,
-what crosses into Python, and who owns the output. Explain one alternative and why you
-did not choose it. Mark unknown platform capabilities as questions, not assumptions.
+Add your recommendation to the investigation record. Identify:
+
+- The local comparison result and what it establishes.
+- Where the scenario's data lives and where each transformation should run.
+- What crosses into Python, and why that movement is needed.
+- Which implementation you would reuse and who would own the output.
+- One alternative and why you did not choose it.
+- What can be demonstrated now and what needs a platform agreement.
+
+For the platform scenario, this is a proposal, not a deployment exercise. Mark unknown
+capabilities and ownership as questions rather than filling them in with assumptions.
 
 You have completed this lesson when you can explain why a good analyst workflow may
 combine SQL, Python, and Polars rather than select one winner.
 
-Continue to [Lesson 9](../lesson_9/README.md) to deliver a workbook—and decide whether
-it is the right deliverable.
+**What you can do now:** compare complete analytical results, distinguish language
+from execution location, and explain a tool choice in terms of the workload. You can
+prototype outside a database or use Python to coordinate SQL without treating either
+as the only way to work.
+
+Continue to [Lesson 9](../lesson_9/README.md) to deliver the information in a workbook,
+connect it to a proposed next action, and decide whether the workbook is the right
+deliverable.

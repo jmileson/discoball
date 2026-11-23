@@ -7,7 +7,18 @@ connect tools together.
 You do not need to replace your SQL knowledge. You are adding another tool. Before
 using it for a whole analysis, you will practice a few basic programming ideas.
 
-Allow two or three sessions of about 45–60 minutes, with breaks at the checkpoints.
+We are deliberately keeping the business question while changing tools. In Lessons
+6 and 7, you will work directly with the familiar files and rebuild basket affinity
+with Polars. In Lesson 8, Python will also run saved SQL and compare the results.
+That gives you options for exploring and prototyping when a platform does not yet
+provide what you need—not a requirement to move every analysis out of SQL.
+
+This lesson takes a smaller step: write, run, understand, and modify a program that
+inspects the inputs. File inspection does not answer the cross-sell question; it gives
+you a manageable workflow in which to learn the programming skills the rebuild needs.
+
+As a working estimate, allow two or three sessions of about 45–60 minutes, with
+breaks at the checkpoints. Taking more sessions is normal when programming is new.
 Complete [Lesson 4](../lesson_4/README.md) first. No previous programming experience
 is required. You will not modify the database or need MotherDuck access.
 
@@ -234,11 +245,11 @@ pair_count = 4
 pair_count_is_four = pair_count == 4
 print(pair_count_is_four)
 
-has_enough_evidence = pair_count >= 10
-print(has_enough_evidence)
+passes_count_cutoff = pair_count >= 10
+print(passes_count_cutoff)
 
-if has_enough_evidence:
-    print("Passes this illustrative count threshold")
+if passes_count_cutoff:
+    print("Passes this illustrative count cutoff")
 else:
     print("Too few shared baskets for this shortlist")
 
@@ -254,7 +265,7 @@ following lines use four spaces. Use spaces consistently and let VS Code help.
 This is syntax, not just the formatting preference it was in SQL.
 
 **Your turn:** predict the output for counts of 4, 10, and 20, then test each one.
-Why is “passes the threshold” not the same as “a commercially useful pairing”?
+Why is “passes the cutoff” not the same as “a commercially useful pairing”?
 
 Common comparisons include `==`, `!=`, `<`, `<=`, `>`, and `>=`. For ordinary
 scalar booleans, combine conditions with `and`, `or`, and `not`; use parentheses to
@@ -496,8 +507,11 @@ real files to test error handling.
 | `FileNotFoundError` | The full requested path and the input-download/setup steps. |
 | `ModuleNotFoundError` | The import spelling, project environment, and whether you ran through `uv run`. |
 
-Do not suppress every exception and print “done.” That would make a failed
-workflow appear successful. Later lessons will build on clear, visible failures.
+> **Watch out — a failed workflow must not look successful**
+>
+> Suppressing every exception and printing “done” can hide missing inputs or failed
+> calculations. Read the error, correct the cause, and rerun. Later workflows will
+> rely on visible failures to distinguish an invalid run from a valid empty result.
 
 ## Part D: Make a small change and explain it
 
@@ -523,8 +537,10 @@ If they report an issue there, use the filename and line number to find it.
 Formatting and linting are useful feedback, not proof that a program answers the
 right analytical question.
 
-### 16. Write a short handoff note
+### 16. Record how the workflow works
 
+Add an implementation section to your existing investigation record. Keep the earlier
+business findings; this section explains how you are making the work reproducible.
 Record:
 
 ```text
@@ -538,13 +554,20 @@ How a missing input is reported:
 The change I made and how I checked it:
 ```
 
-A file existing and not being an LFS placeholder does not prove that it contains
-valid rows, complete history, or suitable data for a business decision. Your note
-should distinguish those claims.
+> **Interpretation limit — an input check is not a data-quality verdict**
+>
+> A file existing and not being an LFS placeholder does not prove that it contains
+> valid rows, complete history, or suitable data for a business decision. In your
+> record, distinguish what the script checked from what remains to be checked.
 
 You have completed the lesson when you can explain the workflow without reading
 it aloud line by line: where its inputs come from, why it repeats a function call,
 what it returns, what it displays, and when it stops.
+
+**What you can do now:** save and rerun a program, reuse an operation across files,
+make a controlled change, and use an error message to investigate a failure. Those
+skills let you move beyond executing supplied scripts towards adapting workflows
+for your own questions.
 
 For an optional way to explore these ideas interactively, take the
 [IPython side quest](ipython_side_quest.md). You will try expressions, inspect

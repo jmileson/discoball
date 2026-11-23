@@ -1,8 +1,14 @@
 # Discoball
 
-A teaching project for analysts working with a supported data platform.
+A teaching project for analysts developing skills for independent exploration and work with a supported data platform.
 
-The goal is not to turn analysts into data engineers. It is to help them approach analytical problems effectively, recognize and communicate data issues, and collaborate with a data engineering platform team. Python and DuckDB provide a practical environment for developing those habits and extending analytical work within the platform's guardrails.
+A team wants to explore which product categories customers buy together. You will turn that interest into a defined analytical question, investigate the available evidence, and recommend a justified next step. The aim is to produce information the team can act on—not to promise a successful recommendation engine.
+
+This is the course's approach to **business intelligence**: producing information that improves our ability to make decisions and act. Reports, workbooks, and dashboards can deliver that information; none is the whole of BI. A useful analysis connects its findings to a decision, a next action, and how we would learn whether that action helped.
+
+You will first build the analysis in SQL, then rebuild it using Python and Polars. That repetition is deliberate: keeping the question fixed lets you learn another tool and check that you have preserved the meaning of the result. You gain options for exploring and prototyping when the platform does not yet provide what you need, while respecting approved access and data-handling practices.
+
+The goal is not to turn analysts into data engineers. It is to help them approach analytical problems effectively, recognize and communicate data issues, and collaborate with a data engineering platform team. **Available now:** local DuckDB, SQL, Python, and Polars. Shared-platform access, workspaces, publishing, and operating responsibilities remain subjects for future agreement; these lessons do not assume they have been provided.
 
 The project uses [uv](https://docs.astral.sh/uv/) to manage Python, dependencies, and a **project-local virtual environment** (`.venv`). This keeps this project's packages separate from other projects and your system Python.
 
@@ -149,10 +155,10 @@ Each lesson is a Markdown file named `README.md` in its own folder under `src/di
 | [Lesson 8: Choose where the work belongs](src/discoball/lesson_8/README.md) | Reconcile SQL and Polars results and reason about execution and data movement. |
 | [Lesson 9: Deliver an analysis—not just a spreadsheet](src/discoball/lesson_9/README.md) | Produce an Excel review pack and decide whether it is the right deliverable. |
 
-Read the lessons in order: later lessons build on the definitions and SQL from earlier ones. For each lesson:
+Read the lessons in order: later lessons build on the definitions and SQL from earlier ones. Lesson timings are working estimates, not tested completion targets; allow extra time for unfamiliar tools and split sessions at checkpoints. For each lesson:
 
 1. Read the explanation, then run each SQL block in DBeaver against your local `.data/dev.duckdb` connection. Run PowerShell commands in the VS Code terminal, not the SQL editor. From Lesson 5 onward, open the linked Python files in VS Code and run the module commands from the repository root. Python code blocks are explained excerpts or scratch examples, not SQL for DBeaver.
-2. Pause at **Your turn** and other questions. Save your queries as a SQL script and keep a short note of your results, assumptions, and unanswered questions.
+2. Pause at **Your turn** and other questions. Save your queries as a SQL script and keep one evolving investigation record of your results, definitions, assumptions, and unanswered questions. Later lessons extend that record with implementation checks and recommendations; you do not need a separate report for every exercise.
 3. Check what each result represents before moving on. A query running successfully is not the same as answering the intended question.
 
 Lessons 2–4 use temporary views that exist only in the connection that created them. Keep using the same SQL editor session. If you disconnect, follow the lesson's instructions to recreate its dependencies before continuing.

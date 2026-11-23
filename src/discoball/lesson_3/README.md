@@ -5,11 +5,18 @@ categories. Now the merchandising team asks:
 
 > Are these categories meaningfully associated, or are they just popular?
 
-You will use the same eligible basket population to calculate support, confidence, and
-lift. Each measure answers a different question. None proves that a recommendation will
-increase sales.
+The team needs a way to prioritise investigation. A frequently observed pair may
+have reach; an unusually associated pair may reveal a relationship that raw popularity
+hides. Those are different reasons to look more closely.
 
-Allow about 60 minutes. Use the same DBeaver session as Lesson 2. If you have
+You will use the same eligible basket population to calculate support, confidence, and
+lift. Your output is an evidence-based comparison of candidate pairs, added to the
+investigation record from Lessons 1 and 2. You will explain what each measure helps
+the team decide—not just produce another ranking.
+
+As a working estimate, allow about 60–90 minutes, with a break after calculating
+and checking the measures in section 4 if useful. Use the same DBeaver session as
+Lesson 2. If you have
 disconnected, rerun its four temporary view definitions in order: `basket_categories`,
 `basket_pairs`, `basket_pair_counts`, and `basket_category_counts`. Do not change the
 eligibility rules between those views.
@@ -29,9 +36,12 @@ SELECT
 FROM basket_categories;
 ```
 
-Removing single-category baskets would answer a different question: association among
-multi-category orders only. That changes the baseline and can change the apparent
-strength of a relationship.
+> **Watch out — the pair table is not the population**
+>
+> Calculate the denominator from `basket_categories`, not just baskets in
+> `basket_pairs`. Dropping single-category baskets changes the question to association
+> among multi-category orders only. It changes the baseline and can change the
+> apparent strength of a relationship.
 
 For a pair A–B, you need four counts from this same population:
 
@@ -78,8 +88,19 @@ population overall.
 - Lift near 1 indicates co-occurrence near that baseline.
 - Lift below 1 indicates co-occurrence below that baseline.
 
-For the same population, lift is symmetric even though confidence is directional. A high
-lift based on very few observations is not automatically reliable.
+For the same population, lift is symmetric even though confidence is directional.
+
+These measures let you ask three useful questions about the same pair:
+
+| Measure | What it helps you understand |
+| --- | --- |
+| Support | How much of the eligible basket population contains this combination? |
+| Confidence A → B | Among baskets containing A, how often is B also present? |
+| Lift | Is that co-occurrence above or below the baseline from B's overall frequency? |
+
+Support describes observed reach, not additional sales you could generate. Confidence
+and lift describe relationships in the records, not the effect of a cross-sell offer.
+Read all three alongside the underlying counts.
 
 ## 3. Assemble counts before calculating rates
 
@@ -129,7 +150,8 @@ WHERE
 
 You should get no rows. A pair cannot appear in more baskets than either of its
 component categories. This kind of invariant is a useful check when you change an
-analytical pipeline.
+analytical pipeline. You have made part of your reasoning executable: the query can
+now flag a result that contradicts the meaning of its counts.
 
 ## 4. Calculate the measures
 
@@ -210,14 +232,15 @@ LIMIT 20
 ;
 ```
 
-Read `pair_baskets` alongside `lift`. A very high lift based on two shared baskets
-is a small amount of evidence, even if the co-occurrence is unusual relative to the
-categories' overall frequencies. Lift alone does not establish that the relationship
-is stable or commercially useful.
+> **Interpretation limit — a striking ratio can rest on little evidence**
+>
+> A very high lift based on two shared baskets is still only two observed shared
+> baskets. Read `pair_baskets` alongside lift before prioritising a pair. Neither
+> lift nor counts alone establish stability or commercial value.
 
-In Lesson 2, only 723 eligible baskets contained multiple categories. Keep that
-limited evidence in mind when comparing pairs. More shared baskets give you more
-observations to investigate, but counts alone do not establish reliability or value.
+In Lesson 2, only 723 eligible baskets contained multiple categories. You can now use
+both the amount of evidence and the relative association to distinguish candidates,
+rather than choosing whichever row tops a single ranking.
 
 **Your turn:** compare two high-lift pairs with different shared-basket counts.
 Which would you investigate first, and why? What would you still need to know
@@ -249,19 +272,28 @@ LIMIT 20
 ;
 ```
 
-These thresholds are exercise choices, not statistical guarantees or universal business
-rules. They screen out some very small counts; they do not establish significance,
-stability, or commercial value.
+> **Interpretation limit — a count cutoff is a screening choice**
+>
+> These cutoffs keep very small counts out of the candidate list. There is no
+> universal minimum count that makes a pair dependable or useful for cross-selling.
+> Record the cutoffs you use and compare the results at different values. Passing
+> the filter means “retained for investigation,” not “validated recommendation.”
 
 **Your turn:** compare minimum pair counts of 5, 10, and 20. Record how the candidate
 list changes. If a filter leaves few or no results, report that rather than quietly
 weakening the rule until you get an appealing answer.
 
-Your pair table contains only observed pairs. It does not list all possible category
-combinations with zero shared baskets. Do not describe it as a complete survey of
-categories that avoid one another.
+> **Interpretation limit — absent pairs are not evaluated pairs**
+>
+> This table contains only observed pairs, not all possible combinations with zero
+> shared baskets. It cannot serve as a complete survey of categories that avoid one
+> another. Investigating those combinations would require explicitly including them.
 
-## 6. Choose what to investigate next
+## 6. Turn the comparison into a next step
+
+Update the investigation record you used in Lesson 2. Keep the basket definition,
+population, and coverage alongside these new measures so the comparison remains
+understandable without the lesson open.
 
 If the evidence permits, pick two candidates: one common pair and one higher-lift
 pair that passes your chosen count filter. If too few qualify, report that limitation
@@ -272,15 +304,33 @@ rather than weakening the rule just to complete the exercise. For each candidate
 - Why it is worth investigating.
 - What makes the evidence weak or incomplete.
 
-Common categories can have substantial commercial reach without remarkable lift. A rare
-pair can have remarkable lift without much reach. Neither ranking is automatically the
-right answer.
+Common categories can appear across many baskets without remarkable lift. A rare
+pair can have remarkable lift without much observed reach. Choosing between them
+requires knowing what the team wants to do, not just which measure is larger.
 
-You also combined all available history. Category popularity, availability, promotions,
-and customer mix can change over time. A next check would be to recompute the analysis
-for defined time periods and see whether the relationship persists. A recommendation
-would ultimately need an evaluation suited to its intended use, not just an attractive
-historical ratio.
+For each candidate—or for your conclusion that none merits prioritising yet—add:
+
+```text
+Information gained beyond the pair count:
+Proposed next check and why it matters:
+What result would change our view:
+Decision the check would help the team make:
+```
+
+For example, a period-by-period check could reveal whether a candidate's shared
+purchases recur or are concentrated in one short period. That would help decide
+whether to take it forward for domain review or gather more observations first.
+If the next step is a trial of a cross-sell offer, identify what outcome the team
+wants to improve and what comparison would help evaluate the trial. You do not
+need to design the experiment in this lesson.
+
+This is the link to action: not declaring that a high-lift pair will increase sales,
+but explaining which uncertainty to resolve next and what decision that enables.
+
+You combined all available history. Category popularity, availability, promotions,
+and customer mix can change over time. Recomputing for defined periods is one useful
+next check; smaller periods will also have fewer observations. Choose a check that
+addresses a specific uncertainty rather than adding analysis for its own sake.
 
 You have completed this lesson when you can explain:
 
@@ -289,5 +339,11 @@ You have completed this lesson when you can explain:
 - Why pair count and lift should be read together.
 - Why observed association is not proof of a successful intervention.
 
+**What you can do now:** distinguish a frequently observed combination from an
+unusually associated one, inspect the evidence behind either, and propose a next
+check tied to a decision. You can explain why a candidate merits investigation
+and which uncertainty the team should resolve next.
+
 Continue to [Lesson 4](../lesson_4/README.md), where you will change the unit from an
-order to a customer—and see why that changes the question.
+order to a customer—and decide whether that evidence better fits what the team
+wants to do.

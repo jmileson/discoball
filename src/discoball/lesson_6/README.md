@@ -4,7 +4,13 @@ You know how to summarize order statuses in SQL. Now you will answer that famili
 question with Polars, a Python library for working with tables.
 
 Keep the question simple while learning the tool. Changing the language should not
-silently change the population or the meaning of a row.
+silently change the population or the meaning of a row. Because you already know
+what the SQL result means, you can concentrate on how dataframe expressions work.
+
+Your output is a status summary checked against Lesson 1, plus a small executable
+check of your own. This is a stepping stone to rebuilding basket affinity: you are
+learning how to ask familiar questions of files directly, without first loading them
+into database tables.
 
 Allow about 60–90 minutes. Complete [Lesson 5](../lesson_5/README.md), then open [explore.py](explore.py).
 
@@ -76,8 +82,11 @@ filtering, a null condition does not retain a row.
 You normally express operations on whole columns rather than looping through rows in
 Python. This lets Polars execute the tabular operation efficiently.
 
-Combine expressions with `&` for AND and `|` for OR, with each comparison in
-parentheses. Do not use Python's scalar `and` or `or` between Polars column expressions.
+> **Watch out — column expressions are not scalar booleans**
+>
+> Combine Polars expressions with `&` for AND and `|` for OR, with each comparison
+> in parentheses. Python's scalar `and` and `or` do not combine column expressions.
+> Keep this distinction from Lesson 5 when translating a condition.
 
 ```python
 selected = orders.filter(
@@ -119,9 +128,13 @@ blaming a library.
 The script checks that the number of unique order identifiers equals the number of rows.
 If it does not, it raises an exception.
 
-This is a useful grain check, but uniqueness alone does not establish valid or non-null
-keys. Checks should match the properties you actually require. Later, you will also
-validate join relationships.
+You are moving an assumption out of your notes and into the workflow: it can now
+stop when the expected grain is violated.
+
+> **Interpretation limit — one passing check does not validate every property**
+>
+> Uniqueness alone does not establish valid or non-null keys. Match each check to
+> the property you require. Later, you will also validate join relationships.
 
 **Your turn:** add a check that the sum of the grouped counts equals `orders.height`.
 Explain what kind of mistake this would detect and what it would not detect.
@@ -139,5 +152,15 @@ replace every call with a lazy equivalent without understanding the workflow.
 For this small local dataset, eager execution is a teaching choice. The next lessons
 will ask whether data should be loaded into Python at all.
 
-Save your script and a brief comparison with the SQL result. Continue to [Lesson
-7](../lesson_7/README.md) to rebuild basket affinity using these expressions.
+Save your script and update the implementation section of your investigation record:
+
+- Do all status counts agree with Lesson 1? Record any differences and their cause.
+- Which Polars expressions perform the filtering, grouping, and counting?
+- What does your added check establish, and what does it leave untested?
+
+**What you can do now:** read selected file columns into a dataframe, express filters
+and summaries without Python row loops, and compare the result with a known SQL
+answer. You have another practical way to explore tabular inputs.
+
+Continue to [Lesson 7](../lesson_7/README.md) to rebuild basket affinity using these
+expressions.
