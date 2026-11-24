@@ -154,6 +154,7 @@ Each lesson is a Markdown file named `README.md` in its own folder under `src/di
 | [Lesson 7: Rebuild basket affinity with Polars](src/discoball/lesson_7/README.md) | Preserve the SQL definitions while rebuilding joins, pairs, and measures. |
 | [Lesson 8: Choose where the work belongs](src/discoball/lesson_8/README.md) | Reconcile SQL and Polars results and reason about execution and data movement. |
 | [Lesson 9: Deliver an analysis—not just a spreadsheet](src/discoball/lesson_9/README.md) | Produce an Excel review pack and decide whether it is the right deliverable. |
+| [Lesson 10: Make a change another analyst can trust](src/discoball/lesson_10/README.md) | Structure shared analytical work, use a feature branch and PR, and review meaning as well as code. |
 
 Read the lessons in order: later lessons build on the definitions and SQL from earlier ones. Lesson timings are working estimates, not tested completion targets; allow extra time for unfamiliar tools and split sessions at checkpoints. For each lesson:
 
@@ -163,7 +164,7 @@ Read the lessons in order: later lessons build on the definitions and SQL from e
 
 Lessons 2–4 use temporary views that exist only in the connection that created them. Keep using the same SQL editor session. If you disconnect, follow the lesson's instructions to recreate its dependencies before continuing.
 
-These lessons use local DuckDB; you do not need a MotherDuck account. The side quest prepares you to discuss shared-platform work without requiring access to one yet.
+These lessons use local DuckDB; you do not need a MotherDuck account. The side quest prepares you to discuss shared-platform work without requiring access to one yet. Lesson 10 uses an approved training repository and a review partner for the full PR workflow, with a local-review alternative if hosting access is unavailable.
 
 ## Reference guide
 

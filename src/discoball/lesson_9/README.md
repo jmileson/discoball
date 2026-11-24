@@ -264,3 +264,7 @@ someone can do with the resulting information.
 You have now taken one analytical question through exploration, SQL, Python, Polars,
 execution choices, and delivery. The next step is not necessarily another tool. It is
 the smallest justified action that helps the intended user make a better decision.
+
+In [Lesson 10: Make a change another analyst can trust](../lesson_10/README.md),
+you will practise maintaining this work with a colleague: divide responsibilities,
+make a small change on a feature branch, and review it through a pull request.
